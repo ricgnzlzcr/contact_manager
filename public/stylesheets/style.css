@@ -1,0 +1,41 @@
+
+#header {
+  background-color: #6f5499;
+  padding: 1rem 0;
+}
+
+#header h1 {
+  color: white;
+}
+
+#header h4 {
+  color: #cdbfe3;
+}
+
+#add-search {
+  background-color: #f5f5f5;
+  padding: 1rem 0;
+}
+
+.contact-name-search {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.card {
+  width: 80%;
+  margin: 1em auto;
+  background-color: #F4F2F8;
+}
+
+.hidden {
+  display: none;
+}
+
+#contactList {
+  padding: 2rem 0;
+}
+
+#contactList ul {
+  list-style-type: none;
+}
