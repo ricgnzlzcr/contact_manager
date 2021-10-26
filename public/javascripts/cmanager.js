@@ -22,12 +22,12 @@ class Model {
 
   addContact(name, email, phone, tagsArr) {
     const id = this.#contacts.length > 0 ? this.#contacts[this.#contacts.length - 1].id + 1 : 1;
-    tagsArr = tagsArr ? tagsArr.join(',') : null;
+    const tagsStr = tagsArr ? tagsArr.join(',') : null;
     this.#contacts.push({ id: id,
                          full_name: name, 
                          email: email,
                          phone_number: phone,
-                         tags: tagsArr
+                         tags: tagsStr
                        });
   }
 
@@ -132,7 +132,7 @@ class View {
   }
 
   /* BINDING */
-  bindDeleteTodo(handler) {
+  bindDeleteContact(handler) {
     $('#contactList ul').on('click', '.delete-contact', e => {
       e.preventDefault();
       const li = e.target.parentNode;
@@ -140,6 +140,20 @@ class View {
       console.log(id);
       handler(id);
     });
+  }
+
+  bindAddContact(handler) {
+    const submitBtn = document.querySelector('#add-contact-btn');
+    const addForm = document.querySelector('#add-contact-form');
+
+    submitBtn.addEventListener('click', e => {
+      const name = addForm.querySelector('#nameInput').value;
+      const email = addForm.querySelector('#emailInput').value;
+      const telephone = addForm.querySelector('#telInput').value;
+
+      handler(name, email, telephone, null);
+    });
+
   }
 
   /* PRIVATE METHODS */
@@ -171,33 +185,33 @@ class View {
     return section;
   }
 
-  #generateFormView(h2text, idSelector) {
-    const div = document.createElement('div');
-    div.id = idSelector;
-    const h2 = document.createElement('h2');
-    h2.innerHTML = h2Text;
-    div.appendChild(h2);
-    div.appendChild(document.createElement('hr'));
-    const innerHTML = `<form action="#">
-                        <div class="mb-3">
-                          <label for="nameInput" class="form-label">Full name:</label>
-                          <input type="text" class="form-control" id="nameInput">
-                        </div>
-                        <div class="mb-3">
-                          <label for="emailInput" class="form-label">Email address:</label>
-                          <input type="email" class="form-control" id="emailInput">
-                        </div>
-                        <div class="mb-3">
-                          <label for="telInput" class="form-label">Telephone number:</label>
-                          <input type="tel" class="form-control" id="telInput">
-                        </div>
-                        <button type="submit" class="btn btn-outline-dark" id="submitContact">Submit</button>
-                        <button type="submit" class="btn btn-outline-dark" id="cancelContact">Cancel</button>
-                      </form>`;
+  // #generateFormView(h2text, idSelector) {
+  //   const div = document.createElement('div');
+  //   div.id = idSelector;
+  //   const h2 = document.createElement('h2');
+  //   h2.innerHTML = h2Text;
+  //   div.appendChild(h2);
+  //   div.appendChild(document.createElement('hr'));
+  //   const innerHTML = `<form action="#">
+  //                       <div class="mb-3">
+  //                         <label for="nameInput" class="form-label">Full name:</label>
+  //                         <input type="text" class="form-control" id="nameInput">
+  //                       </div>
+  //                       <div class="mb-3">
+  //                         <label for="emailInput" class="form-label">Email address:</label>
+  //                         <input type="email" class="form-control" id="emailInput">
+  //                       </div>
+  //                       <div class="mb-3">
+  //                         <label for="telInput" class="form-label">Telephone number:</label>
+  //                         <input type="tel" class="form-control" id="telInput">
+  //                       </div>
+  //                       <button type="submit" class="btn btn-outline-dark" id="submitContact">Submit</button>
+  //                       <button type="submit" class="btn btn-outline-dark" id="cancelContact">Cancel</button>
+  //                     </form>`;
         
-    div.insertAdjacentHTML('beforeend', innerHTML);
-    return div;
-  }
+  //   div.insertAdjacentHTML('beforeend', innerHTML);
+  //   return div;
+  // }
 
   // #generateContactElements(contacts) {
   //   const contactsTemplate = Handlebars.compile(document.querySelector('#contactsTemplate').innerHTML);
@@ -216,7 +230,8 @@ class Controller {
       this.view.displayContacts(this.model.getAllContacts());
     }
 
-    this.view.bindDeleteTodo(this.handleDeleteContact);
+    this.view.bindDeleteContact(this.handleDeleteContact);
+    this.view.bindAddContact(this.handleAddContact);
   }
 
   handleDeleteContact = (id) => {
@@ -224,11 +239,10 @@ class Controller {
     console.log(this.model.getAllContacts());
   }
 
-
-
-  // handleAddContact = (name, email, phone, tagsArr) => {
-  //   this.model.addContact(name, email, phone, tagsArr);
-  // }
+  handleAddContact = (name, email, phone, tagsArr) => {
+    this.model.addContact(name, email, phone, tagsArr);
+    console.log(this.model.getAllContacts());
+  }
 
 }
 
