@@ -70,7 +70,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form action="#" id="add-contact-form">
+          <form action="#" id="update-contact-form">
             <div class="mb-3">
               <label for="nameInput" class="form-label">Full name:</label>
               <input type="text" class="form-control" id="nameInput">
@@ -91,7 +91,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="add-contact-btn" data-bs-dismiss="modal">Update</button>
+          <button type="button" class="btn btn-primary" id="update-contact-btn" data-bs-dismiss="modal">Update</button>
         </div>
       </div>
     </div>
@@ -108,15 +108,15 @@
       <li data-id="{{id}}" class="contact col-md-3 col-sm-4">
         <h3>{{full_name}}</h3>
         <dl>
-          <dt>Phone Number:</dt>
-          <dd>{{phone_number}}</dd>
           <dt>Email:</dt>
           <dd>{{email}}</dd>
+          <dt>Phone Number:</dt>
+          <dd>{{phone_number}}</dd>
           <dt>Tags:</dt>
           {{#if tags}}
             <dd>{{tags}}</dd>
           {{else}}
-            <dd>none</dd>
+            <dd>{{tags}}</dd>
           {{/if}}  
         </dl>
         <button type="button" data-bs-toggle="modal" data-bs-target="#update-contact-modal" class="btn btn-outline-dark edit-contact-btn">Edit</button>

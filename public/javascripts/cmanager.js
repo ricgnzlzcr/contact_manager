@@ -44,6 +44,7 @@ class Model {
   deleteContact(id) {
     const contactIdx = this.#contacts.findIndex(contact => contact.id === id);
     if (contactIdx >= 0) this.#contacts.splice(contactIdx, 1);
+    this.contactListChanged(this.getAllContacts());
   }
 
   updateContact(id, name, email, phone, tagsArr) {
@@ -56,6 +57,7 @@ class Model {
                                   phone_number: phone,
                                   tags: tagsStr
                                 };
+    this.contactListChanged(this.getAllContacts());
   }
 
   getAllContacts() {
@@ -128,7 +130,7 @@ class View {
     this.contactListElem = document.querySelector('#contactList ul');
 
     // Bind edit modal form to correct contact
-    this.bindEditBtnToModal();
+    this.bindContactToEditModal();
   }
 
   displayContacts(contacts) {
@@ -146,7 +148,7 @@ class View {
   }
 
   /* BINDING */
-  bindEditBtnToModal() {
+  bindContactToEditModal() {
     $('body').on('click', '.edit-contact-btn', e => {
       e.preventDefault();
       const modalForm = document.querySelector('#update-contact-modal form');
@@ -161,6 +163,10 @@ class View {
       for (let i = 0; i < formInputs.length; i += 1) {
         formInputs[i].value = contactData[i];
       }
+
+      // Add id to form data attribute
+      const id = contactCard.getAttribute('data-id');
+      modalForm.setAttribute('data-id', id);
     });
   }
 
@@ -183,13 +189,29 @@ class View {
       const email = addForm.querySelector('#emailInput').value;
       const telephone = addForm.querySelector('#telInput').value;
       let tags = addForm.querySelector('#tagsInput').value;
-      tags = tags ? tags.split(', ') : null;
+      tags = tags ? tags.split(',').map(tag => tag.trim()) : null;
 
       handler(name, email, telephone, tags);
       this.#clearFormInputs(addForm);
 
     });
+  }
 
+  bindUpdateContact(handler) {
+    const submitBtn = document.querySelector('#update-contact-btn');
+    const updateForm = document.querySelector('#update-contact-form');
+
+    submitBtn.addEventListener('click', e => {
+      const name = updateForm.querySelector('#nameInput').value;
+      const email = updateForm.querySelector('#emailInput').value;
+      const telephone = updateForm.querySelector('#telInput').value;
+      let tags = updateForm.querySelector('#tagsInput').value;
+      tags = tags ? tags.split(',').map(tag => tag.trim()) : null;
+      const id = Number(updateForm.getAttribute('data-id'));
+      //debugger;
+      handler(id, name, email, telephone, tags);
+      this.#clearFormInputs(updateForm);
+    });
   }
 
   /* PRIVATE METHODS */
@@ -248,6 +270,7 @@ class Controller {
     this.model.bindContactListChanged(this.handleContactListChanged);
     this.view.bindDeleteContact(this.handleDeleteContact);
     this.view.bindAddContact(this.handleAddContact);
+    this.view.bindUpdateContact(this.handleUpdateContact);
   }
 
   handleContactListChanged = contacts => {
@@ -261,6 +284,11 @@ class Controller {
 
   handleAddContact = (name, email, phone, tagsArr) => {
     this.model.addContact(name, email, phone, tagsArr);
+    console.log(this.model.getAllContacts());
+  }
+
+  handleUpdateContact = (id, name, email, phone, tagsArr) => {
+    this.model.updateContact(id, name, email, phone, tagsArr);
     console.log(this.model.getAllContacts());
   }
 
