@@ -20,6 +20,10 @@ class Model {
     ];
   }
 
+  bindContactListChanged(callback) {
+    this.contactListChanged = callback;
+  }
+
   addContact(name, email, phone, tagsArr) {
     const id = this.#contacts.length > 0 ? this.#contacts[this.#contacts.length - 1].id + 1 : 1;
     const tagsStr = tagsArr ? tagsArr.join(',') : null;
@@ -29,6 +33,7 @@ class Model {
                          phone_number: phone,
                          tags: tagsStr
                        });
+    this.contactListChanged(this.getAllContacts());
   }
 
   deleteContact(id) {
@@ -150,13 +155,20 @@ class View {
       const name = addForm.querySelector('#nameInput').value;
       const email = addForm.querySelector('#emailInput').value;
       const telephone = addForm.querySelector('#telInput').value;
+      let tags = addForm.querySelector('#tagsInput').value;
+      tags = tags ? tags.split(', ') : null;
 
-      handler(name, email, telephone, null);
+      handler(name, email, telephone, tags);
+      this.#clearFormInputs(addForm);
+
     });
 
   }
 
   /* PRIVATE METHODS */
+  #clearFormInputs(form) {
+    form.querySelectorAll('input').forEach(input => input.value = '');
+  }
 
   #contactsReset() {
     this.contactListElem.innerHTML = '';
@@ -230,8 +242,13 @@ class Controller {
       this.view.displayContacts(this.model.getAllContacts());
     }
 
+    this.model.bindContactListChanged(this.handleContactListChanged);
     this.view.bindDeleteContact(this.handleDeleteContact);
     this.view.bindAddContact(this.handleAddContact);
+  }
+
+  handleContactListChanged = contacts => {
+    this.view.displayContacts(contacts);
   }
 
   handleDeleteContact = (id) => {
