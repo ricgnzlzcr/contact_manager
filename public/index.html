@@ -62,6 +62,41 @@
     </div>
   </div>
 
+  <div class="modal fade" id="update-contact-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update Contact</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="#" id="add-contact-form">
+            <div class="mb-3">
+              <label for="nameInput" class="form-label">Full name:</label>
+              <input type="text" class="form-control" id="nameInput">
+            </div>
+            <div class="mb-3">
+              <label for="emailInput" class="form-label">Email address:</label>
+              <input type="email" class="form-control" id="emailInput">
+            </div>
+            <div class="mb-3">
+              <label for="telInput" class="form-label">Telephone number:</label>
+              <input type="tel" class="form-control" id="telInput">
+            </div>
+            <div class="mb-3">
+              <label for="tagsInput" class="form-label">Tags (comma delimited):</label>
+              <input type="tel" class="form-control" id="tagsInput" placeholder="ex: marketing, finance, HR">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="add-contact-btn" data-bs-dismiss="modal">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <footer>
     <hr>
@@ -84,7 +119,7 @@
             <dd>none</dd>
           {{/if}}  
         </dl>
-        <button type="button" class="btn btn-outline-dark edit-contact">Edit</button>
+        <button type="button" data-bs-toggle="modal" data-bs-target="#update-contact-modal" class="btn btn-outline-dark edit-contact" class="edit-contact-btn">Edit</button>
         <button type="button" class="btn btn-outline-dark delete-contact">Delete</button>
         <hr>
       </li>

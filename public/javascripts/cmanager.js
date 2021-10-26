@@ -1,3 +1,8 @@
+/**
+ * @class Model
+ *
+ * Manages the data of the application.
+ */
 class Model {
   #contacts;
 
@@ -103,12 +108,17 @@ class Model {
 
 }
 
+/**
+ * @class View
+ *
+ * Visual representation of the model.
+ */
 class View {
   constructor() {
     this.mainView = document.querySelector('#main-view');
     this.contactsTemplate = Handlebars.compile(document.querySelector('#contactsTemplate').innerHTML);
 
-    // Add noContactView (hidden by default)
+    // Add noContactView 
     this.noContactView = this.#generateNoContactView();
     this.mainView.insertAdjacentElement('afterend', this.noContactView);
 
@@ -197,44 +207,20 @@ class View {
     return section;
   }
 
-  // #generateFormView(h2text, idSelector) {
-  //   const div = document.createElement('div');
-  //   div.id = idSelector;
-  //   const h2 = document.createElement('h2');
-  //   h2.innerHTML = h2Text;
-  //   div.appendChild(h2);
-  //   div.appendChild(document.createElement('hr'));
-  //   const innerHTML = `<form action="#">
-  //                       <div class="mb-3">
-  //                         <label for="nameInput" class="form-label">Full name:</label>
-  //                         <input type="text" class="form-control" id="nameInput">
-  //                       </div>
-  //                       <div class="mb-3">
-  //                         <label for="emailInput" class="form-label">Email address:</label>
-  //                         <input type="email" class="form-control" id="emailInput">
-  //                       </div>
-  //                       <div class="mb-3">
-  //                         <label for="telInput" class="form-label">Telephone number:</label>
-  //                         <input type="tel" class="form-control" id="telInput">
-  //                       </div>
-  //                       <button type="submit" class="btn btn-outline-dark" id="submitContact">Submit</button>
-  //                       <button type="submit" class="btn btn-outline-dark" id="cancelContact">Cancel</button>
-  //                     </form>`;
-        
-  //   div.insertAdjacentHTML('beforeend', innerHTML);
-  //   return div;
-  // }
-
-  // #generateContactElements(contacts) {
-  //   const contactsTemplate = Handlebars.compile(document.querySelector('#contactsTemplate').innerHTML);
-  //   return contactsTemplate({contacts: contacts});
-  // }
 }
 
+/**
+ * @class Controller
+ *
+ * Links the user input and the view output.
+ *
+ * @param model
+ * @param view
+ */
 class Controller {
   constructor(model, view) {
-    this.model = model
-    this.view = view
+    this.model = model;
+    this.view = view;
 
     if (this.model.isEmpty()) {
       this.view.displayNoContactView();
