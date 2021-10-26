@@ -1,3 +1,5 @@
+
+
 /**
  * @class Model
  *
@@ -136,10 +138,20 @@ class View {
   displayContacts(contacts) {
     this.#contactsReset();
 
-    const contactElements = this.contactsTemplate({contacts: contacts});
-    this.contactListElem.insertAdjacentHTML('afterbegin',contactElements);
+    if (contacts.length > 0) {
+      const contactElements = this.contactsTemplate({contacts: contacts});
+      this.contactListElem.insertAdjacentHTML('afterbegin',contactElements);
 
-    this.noContactView.classList.add('hidden');
+      this.noContactView.classList.add('hidden');
+    } else {
+      this.noContactView.classList.remove('hidden');
+    }
+
+    // const contactElements = this.contactsTemplate({contacts: contacts});
+    // this.contactListElem.insertAdjacentHTML('afterbegin',contactElements);
+
+    // this.noContactView.classList.add('hidden');
+    
   }
 
   displayNoContactView() {
@@ -230,7 +242,7 @@ class View {
     const innerHTML = `<div class="card">
                         <div class="card-body text-center">
                           <h3 class="h3 text-center">There are no contacts</h3>
-                          <button type="button" class="btn btn-outline-dark add-contact">Add Contact</button>
+                          <button type="button" class="btn btn-outline-dark add-contact" data-bs-toggle="modal" data-bs-target="#new-contact-modal">Add Contact</button>
                         </div>
                       </div>`;
     
