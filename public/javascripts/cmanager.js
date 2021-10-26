@@ -127,9 +127,8 @@ class View {
     this.mainView.appendChild(this.contactListView);
     this.contactListElem = document.querySelector('#contactList ul');
 
-    // Generate edit and add forms
-    //this.editContactForm = this.#generateFormView('Edit Contact', 'edit-form');
-    //this.addContactForm = this.#generateFormView('Add Contact', 'add-form');
+    // Bind edit modal form to correct contact
+    this.bindEditBtnToModal();
   }
 
   displayContacts(contacts) {
@@ -147,6 +146,24 @@ class View {
   }
 
   /* BINDING */
+  bindEditBtnToModal() {
+    $('body').on('click', '.edit-contact-btn', e => {
+      e.preventDefault();
+      const modalForm = document.querySelector('#update-contact-modal form');
+      const contactCard = e.target.parentNode;
+
+      const contactData = [];
+      contactData.push(contactCard.querySelector('h3').innerHTML);
+      const personalData = [...contactCard.querySelectorAll('dd')];
+      personalData.forEach(dd => contactData.push(dd.innerHTML));
+
+      const formInputs = [...modalForm.querySelectorAll('input')];
+      for (let i = 0; i < formInputs.length; i += 1) {
+        formInputs[i].value = contactData[i];
+      }
+    });
+  }
+
   bindDeleteContact(handler) {
     $('#contactList ul').on('click', '.delete-contact', e => {
       e.preventDefault();
